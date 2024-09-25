@@ -2,19 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserRegisterController extends Controller
 {
-    public function showRegistrationForm(){
-        return view('auth.user_register');
+    // Show the registration form
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
     }
-    public function register(Request $request){
+
+    // Handle registration request
+    public function register(Request $request)
+    {
+        // Validate registration data
         $request->validate([
-           'name'=> 'required|string|max:255',
-            'email'=> 'required|string|max:255|email|unique:users',
-            'password'=> 'required|min:8|string|confirmed',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
+
+        // Create new user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // Hash the password
+            'role' => 'user', // Set role to 'user'
+        ]);
+
+        // Log the user in
+        Auth::login($user);
+
+        // Redirect to user dashboard
+        return redirect()->intended('/dashboard');
 
 
     }
