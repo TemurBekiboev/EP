@@ -34,7 +34,19 @@
     <div class="register-container text-center">
         <i class="fas fa-user-plus register-icon"></i>
         <h3 class="mb-4">User Registration</h3>
-        <form action="/user/register" method="POST">
+        @if($errors->any())
+         <div class="alert-danger">
+             <ul>
+                 @foreach($errors->all() as $error)
+                 <li>
+                     {{$error}}
+                 </li>
+                 @endforeach
+             </ul>
+         </div>
+        @endif
+        <form action="{{route('register')}}" method="POST">
+            @csrf
             <div class="form-group text-left">
                 <label for="name"><i class="fas fa-user"></i> Full Name</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>

@@ -12,18 +12,22 @@ class UserRegisterController extends Controller
     // Show the registration form
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        return view('secondVersion.user.registration');
     }
 
     // Handle registration request
     public function register(Request $request)
     {
         // Validate registration data
-        $request->validate([
+       $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
+           'confirm-password'=> 'required|same:password|min:8',
         ]);
+//        if($validator->fails()){
+//            return redirect()->back()->withErrors($validator)->withInput();
+//        }
 
         // Create new user
         $user = User::create([
@@ -34,10 +38,10 @@ class UserRegisterController extends Controller
         ]);
 
         // Log the user in
-        Auth::login($user);
+//        Auth::login($user);
 
         // Redirect to user dashboard
-        return redirect()->intended('/dashboard');
+        return redirect()->route('login');
 
 
     }
