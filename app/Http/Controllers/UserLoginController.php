@@ -18,19 +18,20 @@ class UserLoginController extends Controller
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
+//        dd($request->email);
 
-        if (Auth::attempt($credentials) && Auth::user()->role === 'user') {
-            return redirect()->route('user.dashboard');
+        if (Auth::attempt($credentials) && Auth::user()->isUser()) {
+            return redirect()->route('user-dashboard');
         }
 
-        return redirect()->route('login.form')->withErrors(['error' => 'Invalid credentials or not a user']);
+        return redirect()->route('login-form')->withErrors(['error' => 'Invalid credentials or not a user']);
     }
 
     // Handle logout
     public function logout()
     {
         Auth::logout();
-        return redirect('/login');
+        return redirect()->route('login-form');
     }
 
 }

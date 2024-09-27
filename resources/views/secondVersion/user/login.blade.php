@@ -34,18 +34,19 @@
     <div class="login-container text-center">
         <i class="fas fa-user-circle login-icon"></i>
         <h3 class="mb-4">User Login</h3>
-        @if($errors->any())
-            <div class="alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>
-                            {{$error}}
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+{{--        @if($error->any())--}}
+{{--            <div class="alert-danger">--}}
+{{--                <ul>--}}
+{{--                    @foreach($errors->all() as $error)--}}
+{{--                        <li>--}}
+{{--                            {{$error}}--}}
+{{--                        </li>--}}
+{{--                    @endforeach--}}
+{{--                </ul>--}}
+{{--            </div>--}}
+{{--        @endif--}}
         <form action="{{route('login')}}" method="POST">
+            @csrf
             <div class="form-group text-left">
                 <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>

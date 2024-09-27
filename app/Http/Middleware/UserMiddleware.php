@@ -16,10 +16,10 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 'user') {
+        if (Auth::check() && Auth::user()->isUser()) {
             return $next($request);
         }
 
-        return redirect('/user/login')->with('error', 'You do not have user access');
+        return redirect()->route('login-form')->withErrors('You do not have user access');
     }
 }
