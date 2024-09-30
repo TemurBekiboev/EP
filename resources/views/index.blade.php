@@ -103,7 +103,7 @@
             <!-- Right-aligned Login and Register buttons -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('login.form')}}"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a class="nav-link" href="{{route('login-form')}}"><i class="fas fa-sign-in-alt"></i> Login</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('register-form')}}"><i class="fas fa-user-plus"></i> Register</a>

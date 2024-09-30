@@ -98,10 +98,10 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://via.placeholder.com/30" class="rounded-circle" alt="User Image"> John Doe
+                        <img src="https://via.placeholder.com/30" class="rounded-circle" alt="User Image"> {{Auth::user()->name}}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -113,7 +113,7 @@
 <nav class="sidebar">
     <div class="user-section">
         <img src="https://via.placeholder.com/50" alt="User Image">
-        <h6>John Doe</h6>
+        <h6>{{Auth::user()->name}}</h6>
     </div>
     <ul class="nav flex-column">
         <li class="nav-item">

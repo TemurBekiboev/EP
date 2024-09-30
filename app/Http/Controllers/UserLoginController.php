@@ -11,7 +11,7 @@ class UserLoginController extends Controller
     // Show the login form
     public function login()
     {
-        return view('secondVersion.user.login');
+        return view('user.login');
     }
 
     // Handle login request

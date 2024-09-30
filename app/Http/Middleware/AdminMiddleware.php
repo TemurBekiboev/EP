@@ -20,6 +20,6 @@ class AdminMiddleware
 
         return $next($request);
         }
-        return redirect('/admin/login')->with('error', 'You do not have user access');
+        return redirect()->route('admin-login-form')->with('error', 'You do not have user access');
     }
 }

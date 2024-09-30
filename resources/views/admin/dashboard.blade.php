@@ -40,6 +40,15 @@
         .card {
             margin-bottom: 20px;
         }
+        .admin-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .admin-info img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+        }
     </style>
 </head>
 <body>
@@ -56,9 +65,14 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <h4 class="text-center">Dashboard</h4>
+    <div class="admin-info">
+        <img src="https://via.placeholder.com/100" alt="Admin Photo">
+        <h5>Admin Name</h5>
+    </div>
+    <a href="#" onclick="showSection('dashboard')">Dashboard</a>
     <a href="#" onclick="showSection('products')">Products</a>
     <a href="#" onclick="showSection('categories')">Categories</a>
+    <a href="#" onclick="showSection('subcategories')">Subcategories</a>
     <a href="#" onclick="showSection('orders')">Orders</a>
     <a href="#" onclick="showSection('users')">Users</a>
 </div>
@@ -66,23 +80,70 @@
 <!-- Main Content -->
 <div class="content">
 
-    <!-- Products Section -->
-    <div id="products" class="section">
-        <h2>Manage Products</h2>
+    <!-- Dashboard Section -->
+    <div id="dashboard" class="section">
+        <h2>Admin Dashboard</h2>
+        <p>Welcome to the admin dashboard! Here you can manage products, categories, subcategories, and more.</p>
 
-        <!-- Filter by Category -->
-        <div class="form-group">
-            <label for="categoryFilter">Filter by Category:</label>
-            <select class="form-control" id="categoryFilter">
-                <option>All Categories</option>
-                <option>Category A</option>
-                <option>Category B</option>
-                <option>Category C</option>
-            </select>
+        <!-- Activity Overview -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Users</h5>
+                        <p class="card-text">150</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Products</h5>
+                        <p class="card-text">320</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Orders</h5>
+                        <p class="card-text">450</p>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- Product Management Table -->
-        <div class="table-responsive">
+    <!-- Products Section -->
+    <div id="products" class="section" style="display:none;">
+        <h2>Manage Products</h2>
+        <!-- Product Form -->
+        <form>
+            <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <input type="text" class="form-control" id="productName" placeholder="Enter product name">
+            </div>
+            <div class="form-group">
+                <label for="productCategory">Category:</label>
+                <select class="form-control" id="productCategory">
+                    <option>Category A</option>
+                    <option>Category B</option>
+                    <option>Category C</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Price:</label>
+                <input type="number" class="form-control" id="productPrice" placeholder="Enter product price">
+            </div>
+            <div class="form-group">
+                <label for="productStock">Stock:</label>
+                <input type="number" class="form-control" id="productStock" placeholder="Enter product stock">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+
+        <!-- Existing Products Table -->
+        <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
@@ -106,17 +167,6 @@
                             <button class="btn btn-danger btn-sm">Delete</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Product 2</td>
-                        <td>Category B</td>
-                        <td>$39.99</td>
-                        <td>15</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm">Edit</button>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -125,7 +175,21 @@
     <!-- Categories Section -->
     <div id="categories" class="section" style="display:none;">
         <h2>Manage Categories</h2>
-        <div class="table-responsive">
+        <!-- Category Form -->
+        <form>
+            <div class="form-group">
+                <label for="categoryName">Category Name:</label>
+                <input type="text" class="form-control" id="categoryName" placeholder="Enter category name">
+            </div>
+            <div class="form-group">
+                <label for="categoryDescription">Description:</label>
+                <textarea class="form-control" id="categoryDescription" placeholder="Enter category description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Category</button>
+        </form>
+
+        <!-- Existing Categories Table -->
+        <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
@@ -145,10 +209,47 @@
                             <button class="btn btn-danger btn-sm">Delete</button>
                         </td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Subcategories Section -->
+    <div id="subcategories" class="section" style="display:none;">
+        <h2>Manage Subcategories</h2>
+        <!-- Subcategory Form -->
+        <form>
+            <div class="form-group">
+                <label for="subcategoryName">Subcategory Name:</label>
+                <input type="text" class="form-control" id="subcategoryName" placeholder="Enter subcategory name">
+            </div>
+            <div class="form-group">
+                <label for="parentCategory">Parent Category:</label>
+                <select class="form-control" id="parentCategory">
+                    <option>Category A</option>
+                    <option>Category B</option>
+                    <option>Category C</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Subcategory</button>
+        </form>
+
+        <!-- Existing Subcategories Table -->
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
                     <tr>
-                        <td>2</td>
-                        <td>Category B</td>
-                        <td>Description B</td>
+                        <th>ID</th>
+                        <th>Subcategory Name</th>
+                        <th>Parent Category</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Subcategory 1</td>
+                        <td>Category A</td>
                         <td>
                             <button class="btn btn-warning btn-sm">Edit</button>
                             <button class="btn btn-danger btn-sm">Delete</button>
@@ -209,15 +310,6 @@
                         <td>1</td>
                         <td>John Doe</td>
                         <td>john.doe@example.com</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm">Edit</button>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jane Smith</td>
-                        <td>jane.smith@example.com</td>
                         <td>
                             <button class="btn btn-warning btn-sm">Edit</button>
                             <button class="btn btn-danger btn-sm">Delete</button>

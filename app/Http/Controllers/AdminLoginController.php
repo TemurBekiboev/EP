@@ -9,18 +9,18 @@ class AdminLoginController extends Controller
 {
     public function login()
     {
-        return view('secondVersion.admin.login');
+        return view('admin.login');
     }
 
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials) && Auth::user()->role === 'admin') {
-            return redirect()->intended('/admin/dashboard');
+        if (Auth::attempt($credentials) && Auth::user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
         }
 
-        return redirect('/admin/login')->withErrors(['error' => 'Invalid credentials or not an admin']);
+        return redirect()->route('admin-login-form')->withErrors(['error' => 'Invalid credentials or not an admin']);
     }
 
     public function logout()

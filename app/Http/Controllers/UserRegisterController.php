@@ -12,7 +12,7 @@ class UserRegisterController extends Controller
     // Show the registration form
     public function showRegistrationForm()
     {
-        return view('secondVersion.user.registration');
+        return view('user.registration');
     }
 
     // Handle registration request

@@ -33,7 +33,8 @@
     <div class="login-container text-center">
         <i class="fas fa-user-shield admin-icon"></i>
         <h3 class="mb-4">Admin Login</h3>
-        <form action="/admin/login" method="POST">
+        <form action="{{route('admin-login')}}" method="POST">
+            @csrf
             <div class="form-group text-left">
                 <label for="email"><i class="fas fa-envelope"></i> Admin Email</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter admin email" required>
