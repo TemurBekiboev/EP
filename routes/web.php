@@ -5,6 +5,9 @@ use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\UserRegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\UserMiddleware;
 
 //  Guest Routes
 Route::get('/', function (){
@@ -17,10 +20,8 @@ Route::prefix('admin')->group(function () {
     Route::post('/login', [AdminLoginController::class, 'authenticate'])->name('admin-login');
     Route::post('/logout', [AdminLoginController::class, 'logout'])->name('admin-logout');
 
-    Route::middleware([\App\Http\Middleware\AdminMiddleware::class])->group(function () {
-        Route::get('/admin/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
+    Route::middleware([AdminMiddleware::class])->group(function () {
+        Route::get('/dashboard',[AdminDashboardController::class,'index'])->name('admin-dashboard');
     });
 });
 
@@ -32,6 +33,6 @@ Route::post('/register', [UserRegisterController::class, 'register'])->name('reg
 Route::get('/logout', [UserLoginController::class, 'logout'])->name('logout');
 
 
-Route::middleware([\App\Http\Middleware\UserMiddleware::class])->group(function () {
+Route::middleware([UserMiddleware::class])->group(function () {
 Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user-dashboard');
 });

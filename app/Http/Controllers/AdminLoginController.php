@@ -17,7 +17,7 @@ class AdminLoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials) && Auth::user()->isAdmin()) {
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin-dashboard');
         }
 
         return redirect()->route('admin-login-form')->withErrors(['error' => 'Invalid credentials or not an admin']);
