@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
+            $table->string('attributeName')->nullable('false');
+            $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignId('subCategory_id')->references('id')->on('sub_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
