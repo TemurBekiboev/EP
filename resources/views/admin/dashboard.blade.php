@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f8f9fa; /* Light background */
+            background-color: #f8f9fa;
         }
         .navbar {
             background-color: #343a40;
@@ -73,6 +73,9 @@
     <a href="#" onclick="showSection('products')">Products</a>
     <a href="#" onclick="showSection('categories')">Categories</a>
     <a href="#" onclick="showSection('subcategories')">Subcategories</a>
+    <a href="#" onclick="showSection('attributes')">Attributes</a>
+    <a href="#" onclick="showSection('attributeValues')">Attribute Values</a>
+    <a href="#" onclick="showSection('userReviews')">User Reviews</a>
     <a href="#" onclick="showSection('orders')">Orders</a>
     <a href="#" onclick="showSection('users')">Users</a>
 </div>
@@ -83,7 +86,7 @@
     <!-- Dashboard Section -->
     <div id="dashboard" class="section">
         <h2>Admin Dashboard</h2>
-        <p>Welcome to the admin dashboard! Here you can manage products, categories, subcategories, and more.</p>
+        <p>Welcome to the admin dashboard! Here you can manage products, categories, subcategories, attributes, and more.</p>
 
         <!-- Activity Overview -->
         <div class="row">
@@ -114,7 +117,7 @@
         </div>
     </div>
 
-    <!-- Products Section -->
+    <!-- Products Section (unchanged) -->
     <div id="products" class="section" style="display:none;">
         <h2>Manage Products</h2>
         <!-- Product Form -->
@@ -146,33 +149,33 @@
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Product 1</td>
-                        <td>Category A</td>
-                        <td>$49.99</td>
-                        <td>25</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm">Edit</button>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Product 1</td>
+                    <td>Category A</td>
+                    <td>$49.99</td>
+                    <td>25</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Categories Section -->
+    <!-- Categories Section (reflects migration) -->
     <div id="categories" class="section" style="display:none;">
         <h2>Manage Categories</h2>
         <!-- Category Form -->
@@ -181,10 +184,6 @@
                 <label for="categoryName">Category Name:</label>
                 <input type="text" class="form-control" id="categoryName" placeholder="Enter category name">
             </div>
-            <div class="form-group">
-                <label for="categoryDescription">Description:</label>
-                <textarea class="form-control" id="categoryDescription" placeholder="Enter category description"></textarea>
-            </div>
             <button type="submit" class="btn btn-primary">Add Category</button>
         </form>
 
@@ -192,29 +191,27 @@
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Category Name</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Category Name</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Category A</td>
-                        <td>Description A</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm">Edit</button>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Category A</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Subcategories Section -->
+    <!-- Subcategories Section (reflects migration) -->
     <div id="subcategories" class="section" style="display:none;">
         <h2>Manage Subcategories</h2>
         <!-- Subcategory Form -->
@@ -228,7 +225,6 @@
                 <select class="form-control" id="parentCategory">
                     <option>Category A</option>
                     <option>Category B</option>
-                    <option>Category C</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Add Subcategory</button>
@@ -238,83 +234,222 @@
         <div class="table-responsive mt-4">
             <table class="table table-bordered">
                 <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Subcategory Name</th>
-                        <th>Parent Category</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Subcategory Name</th>
+                    <th>Parent Category</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Subcategory 1</td>
-                        <td>Category A</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm">Edit</button>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Subcategory 1</td>
+                    <td>Category A</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Orders Section -->
+    <!-- Attributes Section (reflects migration) -->
+    <div id="attributes" class="section" style="display:none;">
+        <h2>Manage Attributes</h2>
+        <!-- Attribute Form -->
+        <form>
+            <div class="form-group">
+                <label for="attributeName">Attribute Name:</label>
+                <input type="text" class="form-control" id="attributeName" placeholder="Enter attribute name">
+            </div>
+            <div class="form-group">
+                <label for="attributeProduct">Product:</label>
+                <select class="form-control" id="attributeProduct">
+                    <option>Product 1</option>
+                    <option>Product 2</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="attributeSubCategory">Subcategory:</label>
+                <select class="form-control" id="attributeSubCategory">
+                    <option>Subcategory A</option>
+                    <option>Subcategory B</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Attribute</button>
+        </form>
+
+        <!-- Existing Attributes Table -->
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Attribute Name</th>
+                    <th>Product</th>
+                    <th>Subcategory</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Color</td>
+                    <td>Product 1</td>
+                    <td>Subcategory A</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Attribute Values Section (reflects migration) -->
+    <div id="attributeValues" class="section" style="display:none;">
+        <h2>Manage Attribute Values</h2>
+        <!-- Attribute Value Form -->
+        <form>
+            <div class="form-group">
+                <label for="attributeValueName">Attribute Value:</label>
+                <input type="text" class="form-control" id="attributeValueName" placeholder="Enter attribute value">
+            </div>
+            <div class="form-group">
+                <label for="attributeValueProduct">Product:</label>
+                <select class="form-control" id="attributeValueProduct">
+                    <option>Product 1</option>
+                    <option>Product 2</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="attributeValueAttribute">Attribute:</label>
+                <select class="form-control" id="attributeValueAttribute">
+                    <option>Color</option>
+                    <option>Size</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Attribute Value</button>
+        </form>
+
+        <!-- Existing Attribute Values Table -->
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Attribute Value</th>
+                    <th>Product</th>
+                    <th>Attribute</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Red</td>
+                    <td>Product 1</td>
+                    <td>Color</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- User Reviews Section (reflects migration) -->
+    <div id="userReviews" class="section" style="display:none;">
+        <h2>Manage User Reviews</h2>
+        <!-- Existing Reviews Table -->
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Product</th>
+                    <th>Rating</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>User 1</td>
+                    <td>Product 1</td>
+                    <td>4.5</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Orders Section (unchanged) -->
     <div id="orders" class="section" style="display:none;">
         <h2>Manage Orders</h2>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th>Total Price</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>John Doe</td>
-                        <td>Product 1</td>
-                        <td>$49.99</td>
-                        <td>Pending</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm">Edit</button>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>1001</td>
+                    <td>Product 1</td>
+                    <td>Customer A</td>
+                    <td>Shipped</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Users Section -->
+    <!-- Users Section (unchanged) -->
     <div id="users" class="section" style="display:none;">
         <h2>Manage Users</h2>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>User Name</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>John Doe</td>
-                        <td>john.doe@example.com</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm">Edit</button>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td>
+                    <td>john@example.com</td>
+                    <td>Admin</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm">Edit</button>
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -323,18 +458,13 @@
 </div>
 
 <script>
-    // JavaScript to show and hide sections based on sidebar click
     function showSection(sectionId) {
         const sections = document.querySelectorAll('.section');
-        sections.forEach(section => {
-            section.style.display = 'none';
-        });
+        sections.forEach(section => section.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
     }
 </script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
