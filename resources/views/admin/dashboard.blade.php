@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -49,6 +50,20 @@
             width: 100px;
             height: 100px;
         }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 20px;
+            cursor: pointer;
+            color: #6c757d;
+            font-size: 2rem;
+            transition: all 0.3s;
+        }
+        .custom-file-upload:hover {
+            color: #495057;
+        }
+        .custom-file-upload input {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -58,7 +73,7 @@
     <a class="navbar-brand" href="#">Admin Panel</a>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
+            <a class="nav-link" href="{{route('admin-logout')}}">Logout</a>
         </li>
     </ul>
 </nav>
@@ -121,17 +136,25 @@
     <div id="products" class="section" style="display:none;">
         <h2>Manage Products</h2>
         <!-- Product Form -->
-        <form>
+        <form action="{{route('product-create')}}" method="post" enctype="multipart/form-data">
+            @csrf
             <div class="form-group">
                 <label for="productName">Product Name:</label>
-                <input type="text" class="form-control" id="productName" placeholder="Enter product name">
+                <input type="text" class="form-control" name="productName" id="productName" placeholder="Enter product name">
             </div>
             <div class="form-group">
-                <label for="productCategory">Category:</label>
-                <select class="form-control" id="productCategory">
-                    <option>Category A</option>
-                    <option>Category B</option>
-                    <option>Category C</option>
+                <label for="productCategory">Sub Category:</label>
+                <select class="form-control" id="productCategory" name="productCategory">
+                    @if(isset($SubCategories) && $SubCategories->isNotEmpty())
+                    @foreach($SubCategories as $SubCategory)
+
+                    <option value="{{$SubCategory->id}}">{{$SubCategory->name}}</option>
+
+                    @endforeach
+                    @else
+                        <option>Not Found</option>
+                    @endif
+
                 </select>
             </div>
             <div class="form-group">
@@ -139,8 +162,38 @@
                 <input type="number" class="form-control" id="productPrice" placeholder="Enter product price">
             </div>
             <div class="form-group">
-                <label for="productStock">Stock:</label>
-                <input type="number" class="form-control" id="productStock" placeholder="Enter product stock">
+                <label for="productDescription">Description:</label>
+                <textarea class="form-control" name="description" id="productDescription" cols="30" rows="10"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="productBrand">Brand:</label>
+                <input type="text" class="form-control" id="productBrand" placeholder="Enter product brand name">
+            </div>
+            <div class="form-group">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                    Product Availability
+                </label>
+            </div>
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Quantity:</label>
+                <input type="number" class="form-control" id="productQuantity" placeholder="Enter product quantity">
+            </div>
+            <div class="form-group">
+
+                <!-- Custom Upload Button -->
+                <label class="custom-file-upload">
+                    <input id="fileUpload" type="file" accept="image/*"/>
+                    <i class="fa-solid fa-image fa-2x"></i> <!-- Icon size doubled here -->
+                </label>
+                <!-- Label -->
+                <label for="fileUpload" class="form-label">Product image:</label>
+            </div>
+            <div class="form-group">
+                <label for="productName">Manufacturer:</label>
+                <input type="text" class="form-control" id="productName" placeholder="Manufacturer name">
             </div>
             <button type="submit" class="btn btn-primary">Add Product</button>
         </form>
@@ -179,10 +232,11 @@
     <div id="categories" class="section" style="display:none;">
         <h2>Manage Categories</h2>
         <!-- Category Form -->
-        <form>
+        <form action="{{route('category-create')}}" method="post">
+            @csrf
             <div class="form-group">
                 <label for="categoryName">Category Name:</label>
-                <input type="text" class="form-control" id="categoryName" placeholder="Enter category name">
+                <input type="text" class="form-control" name="name" id="categoryName" placeholder="Enter category name">
             </div>
             <button type="submit" class="btn btn-primary">Add Category</button>
         </form>
@@ -198,14 +252,42 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Category A</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </td>
-                </tr>
+                @if(isset($Categories) && $Categories->isNotEmpty())
+                    @foreach($Categories as $Category)
+                        <tr>
+                            <!-- ID Field -->
+                            <td>
+                                <input type="number" class="form-control" value="{{ $Category->id }}" readonly style="width: 100%;">
+                            </td>
+                            <!-- Name Field -->
+                            <td>
+                                <input type="text" class="form-control" id="categoryName-{{ $Category->id }}" value="{{ $Category->name }}" readonly style="width: 100%;">
+                            </td>
+                            <!-- Actions -->
+                            <td>
+                                <!-- Edit Button -->
+                                <button class="btn btn-success btn-sm" onclick="enableEdit({{ $Category->id }})">
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </button>
+
+                                <!-- Update Button -->
+                                <button class="btn btn-warning btn-sm" id="updateBtn-{{ $Category->id }}" disabled>
+                                    <i class="fa-solid fa-check"></i> Update
+                                </button>
+
+                                <!-- Delete Button -->
+                                <form action="{{ route('category-delete', $Category->id) }}" method="POST" style="display:inline;">
+{{--                                   <form style="display:inline;">--}}
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
@@ -462,6 +544,21 @@
         const sections = document.querySelectorAll('.section');
         sections.forEach(section => section.style.display = 'none');
         document.getElementById(sectionId).style.display = 'block';
+    }
+
+    function enableEdit(id) {
+        // Enable input field for editing
+        const nameField = document.getElementById(`categoryName-${id}`);
+        const updateBtn = document.getElementById(`updateBtn-${id}`);
+
+        if (nameField.readOnly) {
+            nameField.readOnly = false;
+            updateBtn.disabled = false;
+            nameField.focus(); // Focus on the input when edit is enabled
+        } else {
+            nameField.readOnly = true;
+            updateBtn.disabled = true;
+        }
     }
 </script>
 

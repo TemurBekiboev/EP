@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class SubCategory extends Model
 {
     use HasFactory;
+    public function product(){
+        return $this->hasMany(Product::class);
+    }
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }
