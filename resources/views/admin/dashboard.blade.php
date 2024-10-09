@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -63,6 +66,47 @@
         }
         .custom-file-upload input {
             display: none;
+        }
+        .toast-success {
+            background-color: green !important;
+        }
+        .toast-error {
+            background-color: red !important;
+        }
+        .toast-message {
+            color: white !important;
+        }
+        /* Hide default file input */
+        /* Hide default file input */
+        .file-input {
+            display: none;
+        }
+
+        /* Custom button style */
+        .btn-upload {
+            display: inline-flex;
+            align-items: center;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .btn-upload i {
+            margin-right: 5px;
+        }
+
+        /* Image preview styling */
+        .image-preview img {
+            border: 1px solid #ddd;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        /* Responsive table */
+        .table-responsive {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -238,6 +282,22 @@
                 <label for="categoryName">Category Name:</label>
                 <input type="text" class="form-control" name="name" id="categoryName" placeholder="Enter category name">
             </div>
+            <!-- Custom Image Upload Button -->
+            <div class="form-group">
+                <label for="categoryImage">Category Image:</label>
+                <div class="custom-file-upload">
+                    <input type="file" name="image" id="categoryImage" class="file-input" accept="image/*" onchange="previewImage(event)">
+                    <button type="button" class="btn btn-secondary btn-upload" onclick="document.getElementById('categoryImage').click();">
+                        <i class="fa-solid fa-upload"></i> Upload Image
+                    </button>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="image-preview mt-3">
+                    <img id="imagePreview" src="" alt="Image Preview" style="max-width: 150px; max-height: 150px; display: none;">
+                </div>
+            </div>
+
             <button type="submit" class="btn btn-primary">Add Category</button>
         </form>
 
@@ -248,32 +308,42 @@
                 <tr>
                     <th>ID</th>
                     <th>Category Name</th>
-                    <th>Actions</th>
+                    <th>Update</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
                 @if(isset($Categories) && $Categories->isNotEmpty())
                     @foreach($Categories as $Category)
+
                         <tr>
+                            <form action="{{route('category-update', $Category->id)}}" method="post">
+                                @csrf
+                                @method('PUT')
                             <!-- ID Field -->
                             <td>
                                 <input type="number" class="form-control" value="{{ $Category->id }}" readonly style="width: 100%;">
                             </td>
                             <!-- Name Field -->
                             <td>
-                                <input type="text" class="form-control" id="categoryName-{{ $Category->id }}" value="{{ $Category->name }}" readonly style="width: 100%;">
+                                <input type="text" class="form-control" name="category_name" id="categoryName-{{ $Category->id }}" value="{{ $Category->name }}" readonly style="width: 100%;">
                             </td>
                             <!-- Actions -->
                             <td>
                                 <!-- Edit Button -->
-                                <button class="btn btn-success btn-sm" onclick="enableEdit({{ $Category->id }})">
+                                <button type="button" class="btn btn-success btn-sm" onclick="enableEdit({{ $Category->id }})">
                                     <i class="fa-solid fa-pen"></i> Edit
                                 </button>
 
                                 <!-- Update Button -->
-                                <button class="btn btn-warning btn-sm" id="updateBtn-{{ $Category->id }}" disabled>
+
+
+                                <button type="submit" class="btn btn-warning btn-sm" id="updateBtn-{{ $Category->id }}" disabled>
                                     <i class="fa-solid fa-check"></i> Update
                                 </button>
+                            </td>
+                        </form>
+                            <td>
 
                                 <!-- Delete Button -->
                                 <form action="{{ route('category-delete', $Category->id) }}" method="POST" style="display:inline;">
@@ -286,6 +356,7 @@
                                 </form>
                             </td>
                         </tr>
+
                     @endforeach
                 @endif
                 </tbody>
@@ -539,6 +610,29 @@
 
 </div>
 
+
+<!-- jQuery (required for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+<!-- Popper.js (required for Bootstrap tooltips, popovers, etc.) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    @if(session('success'))
+    toastr.success("{{ session('success') }}");
+    @endif
+
+    @if(session('error'))
+    toastr.error("{{ session('error') }}");
+    @endif
+</script>
+
 <script>
     function showSection(sectionId) {
         const sections = document.querySelectorAll('.section');
@@ -553,12 +647,25 @@
 
         if (nameField.readOnly) {
             nameField.readOnly = false;
-            updateBtn.disabled = false;
+            updateBtn.removeAttribute('disabled');
             nameField.focus(); // Focus on the input when edit is enabled
         } else {
             nameField.readOnly = true;
             updateBtn.disabled = true;
         }
+    }
+    function previewImage(event) {
+        const reader = new FileReader();
+        const imagePreview = document.getElementById('imagePreview');
+
+        reader.onload = function() {
+            if (reader.readyState === 2) {
+                imagePreview.src = reader.result;
+                imagePreview.style.display = 'block';
+            }
+        }
+
+        reader.readAsDataURL(event.target.files[0]);
     }
 </script>
 

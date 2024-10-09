@@ -30,7 +30,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/dashboard/product/{id}/update',[ProductUpdateController::class,'update'])->name('product-update');
         Route::post('/dashboard/product/{id}/delete',[ProductUpdateController::class,'delete'])->name('product-delete');
         Route::post('/dashboard/category/create',[CategoryCreateController::class,'create'])->name('category-create');
-        Route::post('/dashboard/category/{id}/update',[CategoryUpdateController::class,'update'])->name('category-update');
+        Route::put('/dashboard/category/{id}/update',[CategoryUpdateController::class,'update'])->name('category-update');
         Route::delete('/dashboard/category/{id}/delete',[CategoryUpdateController::class,'delete'])->name('category-delete');
     });
 });
