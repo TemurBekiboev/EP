@@ -10,19 +10,28 @@ use Illuminate\Support\Facades\Storage;
 class CategoryCreateController extends Controller
 {
     public function create(Request $request){
-
         $validatedData = $request->validate([
            'name'=>'required|string|max:255',
-            'image'=>'required|mimes:jpg,jpeg,png|max:2048',
+            'image'=>'required|image|max:2048',
         ]);
+//        dd($validatedData);
 
-            $category = Category::create($validatedData);
 
-            if ($category){
+
+
+            if ($validatedData){
+
+               $file = $request->file('image')->getClientOriginalName();
+                Storage::disk('public')->putFileAs('images',$request->file('image'),$file);
+                Category::create([
+                    'name'=>$request->name,
+                    'image'=>'images/'.$file,
+                ]);
+
                 return redirect()->back()->with('success','Category created successfully');
             }
             else{
-                return redirect()->back()->withErrors($validatedData);
+                return redirect()->back()->with('error','Something wrong');
             }
 
     }

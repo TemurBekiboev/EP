@@ -11,7 +11,7 @@
 
     <style>
         body {
-            background-color: #f8f9fa;
+            /*background-color: #f8f9fa;*/
         }
         .navbar {
             background-color: #343a40;
@@ -76,7 +76,18 @@
         .toast-message {
             color: white !important;
         }
-        /* Hide default file input */
+        /*tr{*/
+        /*    display: flex;*/
+        /*    align-items: center;*/
+        /*    justify-content: center;*/
+        /*    height: 100px;*/
+        /*}*/
+        /*td {*/
+        /*    display: flex;*/
+        /*    align-items: center;*/
+        /*    justify-content: center;*/
+        /*    height: 100px;*/
+        /*}*/
         /* Hide default file input */
         .file-input {
             display: none;
@@ -104,10 +115,43 @@
             border-radius: 5px;
         }
 
-        /* Responsive table */
-        .table-responsive {
-            margin-top: 20px;
+        /*!* Responsive table *!*/
+        /*.flex-center {*/
+        /*    display: flex;*/
+        /*    align-items: center;*/
+        /*    justify-content: center;*/
+        /*}*/
+
+        .flex-center img {
+            width: 60px;
+            height: 60px;
+            display: block;
+            margin-left:auto;
+            margin-right: auto;
         }
+        .flex-center img:hover {
+            cursor: pointer;
+        }
+
+        .table > tbody > tr > td {
+            vertical-align: middle;
+        }
+
+        /*.table-input-container {*/
+        /*    width: 100%;*/
+        /*    height: 100%;*/
+        /*    display: flex;*/
+        /*    align-items: center;*/
+        /*    align-self: center;*/
+        /*}*/
+
+        /*.table-input-container input {*/
+        /*    margin: 0;*/
+        /*    align-self: center;*/
+        /*    display: block;*/
+        /*    !*margin: auto;*!*/
+        /*}*/
+
     </style>
 </head>
 <body>
@@ -276,7 +320,7 @@
     <div id="categories" class="section" style="display:none;">
         <h2>Manage Categories</h2>
         <!-- Category Form -->
-        <form action="{{route('category-create')}}" method="post">
+        <form action="{{route('category-create')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="categoryName">Category Name:</label>
@@ -286,6 +330,7 @@
             <div class="form-group">
                 <label for="categoryImage">Category Image:</label>
                 <div class="custom-file-upload">
+
                     <input type="file" name="image" id="categoryImage" class="file-input" accept="image/*" onchange="previewImage(event)">
                     <button type="button" class="btn btn-secondary btn-upload" onclick="document.getElementById('categoryImage').click();">
                         <i class="fa-solid fa-upload"></i> Upload Image
@@ -306,7 +351,8 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
+{{--                    <th>ID</th>--}}
+                    <th>Image</th>
                     <th>Category Name</th>
                     <th>Update</th>
                     <th>Delete</th>
@@ -317,19 +363,40 @@
                     @foreach($Categories as $Category)
 
                         <tr>
+
                             <form action="{{route('category-update', $Category->id)}}" method="post">
                                 @csrf
                                 @method('PUT')
                             <!-- ID Field -->
-                            <td>
-                                <input type="number" class="form-control" value="{{ $Category->id }}" readonly style="width: 100%;">
-                            </td>
+{{--                            <td>--}}
+{{--                                <div class="table-input-container">--}}
+{{--                                <input type="number" class="form-control" value="{{ $Category->id }}" readonly style="width: 100%;">--}}
+{{--                                </div>--}}
+{{--                            </td>--}}
+
+                                <!-- Image Field -->
+                                <td>
+                                    <div class="flex-center">
+                                    @if($Category->image)
+                                        <img src="{{ asset('storage/' . $Category->image) }}" alt="Category Image" id="categoryImageSmall" class="img-fluid" onclick="document.getElementById('categoryImage-{{ $Category->id }}').click();">
+                                    @else
+                                        <span>No Image</span>
+                                    @endif
+
+                                    <!-- File input, only visible after Edit is clicked -->
+                                    <input type="file" name="category_image" id="categoryImage-{{ $Category->id }}" onchange="replaceImage(event)" class="form-control mt-2" style="display: none;" disabled>
+                                    </div>
+                                </td>
+
                             <!-- Name Field -->
                             <td>
+                                <div class="table-input-container">
                                 <input type="text" class="form-control" name="category_name" id="categoryName-{{ $Category->id }}" value="{{ $Category->name }}" readonly style="width: 100%;">
+                                </div>
                             </td>
                             <!-- Actions -->
                             <td>
+                                <div class="flex-center">
                                 <!-- Edit Button -->
                                 <button type="button" class="btn btn-success btn-sm" onclick="enableEdit({{ $Category->id }})">
                                     <i class="fa-solid fa-pen"></i> Edit
@@ -341,10 +408,11 @@
                                 <button type="submit" class="btn btn-warning btn-sm" id="updateBtn-{{ $Category->id }}" disabled>
                                     <i class="fa-solid fa-check"></i> Update
                                 </button>
+                                </div>
                             </td>
                         </form>
                             <td>
-
+                                <div class="flex-center">
                                 <!-- Delete Button -->
                                 <form action="{{ route('category-delete', $Category->id) }}" method="POST" style="display:inline;">
 {{--                                   <form style="display:inline;">--}}
@@ -354,6 +422,7 @@
                                         <i class="fa-solid fa-trash"></i> Delete
                                     </button>
                                 </form>
+                                </div>
                             </td>
                         </tr>
 
@@ -631,6 +700,12 @@
     @if(session('error'))
     toastr.error("{{ session('error') }}");
     @endif
+
+    @if($errors->any())
+    @foreach ($errors->all() as $error)
+    toastr.error("{{ $error }}");
+    @endforeach
+@endif
 </script>
 
 <script>
@@ -644,14 +719,17 @@
         // Enable input field for editing
         const nameField = document.getElementById(`categoryName-${id}`);
         const updateBtn = document.getElementById(`updateBtn-${id}`);
+        const imageField = document.getElementById(`categoryImage-${id}`);
 
         if (nameField.readOnly) {
             nameField.readOnly = false;
             updateBtn.removeAttribute('disabled');
+            imageField.removeAttribute('disabled');
             nameField.focus(); // Focus on the input when edit is enabled
         } else {
             nameField.readOnly = true;
             updateBtn.disabled = true;
+            imageField.disabled = true;
         }
     }
     function previewImage(event) {
@@ -662,6 +740,19 @@
             if (reader.readyState === 2) {
                 imagePreview.src = reader.result;
                 imagePreview.style.display = 'block';
+            }
+        }
+
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    function replaceImage(event) {
+        const reader = new FileReader();
+        const imagePreview = document.getElementById('categoryImageSmall');
+
+        reader.onload = function() {
+            if (reader.readyState === 2) {
+                imagePreview.src = reader.result;
+                // imagePreview.style.display = 'block';
             }
         }
 
