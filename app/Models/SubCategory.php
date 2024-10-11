@@ -15,4 +15,11 @@ class SubCategory extends Model
     public function category(){
         return $this->belongsTo(Category::class);
     }
+    public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+        'category_id',
+        'image',
+    ];
 }

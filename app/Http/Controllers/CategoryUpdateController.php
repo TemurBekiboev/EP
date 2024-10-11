@@ -10,10 +10,12 @@ class CategoryUpdateController extends Controller
 {
 
     public function update(Request $request,$id){
+//        dd($request->category_image);
         $validateData = $request->validate([
             'category_name'=> 'required|string|max:255',
-            'category_image'=> 'required|image|max:2048',
+            'category_image'=> 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
         ]);
+//        dd($validateData);
 
         $category = Category::find($id);
 
@@ -27,6 +29,9 @@ class CategoryUpdateController extends Controller
             $category->save();
 
             return redirect()->back()->with('success','Category updated successfully');
+        }
+        else{
+            return redirect()->back()->with('error','Category can not be updated');
         }
     }
     public function delete($id){

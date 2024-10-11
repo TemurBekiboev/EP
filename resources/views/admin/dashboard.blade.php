@@ -76,19 +76,6 @@
         .toast-message {
             color: white !important;
         }
-        /*tr{*/
-        /*    display: flex;*/
-        /*    align-items: center;*/
-        /*    justify-content: center;*/
-        /*    height: 100px;*/
-        /*}*/
-        /*td {*/
-        /*    display: flex;*/
-        /*    align-items: center;*/
-        /*    justify-content: center;*/
-        /*    height: 100px;*/
-        /*}*/
-        /* Hide default file input */
         .file-input {
             display: none;
         }
@@ -364,7 +351,7 @@
 
                         <tr>
 
-                            <form action="{{route('category-update', $Category->id)}}" method="post">
+                            <form action="{{route('category-update', $Category->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                             <!-- ID Field -->
@@ -437,17 +424,37 @@
     <div id="subcategories" class="section" style="display:none;">
         <h2>Manage Subcategories</h2>
         <!-- Subcategory Form -->
-        <form>
+        <form action="{{route('sub-category-create')}}" method="post" enctype="multipart/form-data">
+            @csrf
             <div class="form-group">
                 <label for="subcategoryName">Subcategory Name:</label>
-                <input type="text" class="form-control" id="subcategoryName" placeholder="Enter subcategory name">
+                <input type="text" name="name" class="form-control" id="subcategoryName" placeholder="Enter subcategory name">
             </div>
             <div class="form-group">
                 <label for="parentCategory">Parent Category:</label>
-                <select class="form-control" id="parentCategory">
-                    <option>Category A</option>
-                    <option>Category B</option>
+                <select class="form-control" id="parentCategory" name="category_id">
+                    @if(isset($Categories) && $Categories->isNotEmpty())
+                    @foreach($Categories as $Category)
+                    <option value="{{$Category->id}}">{{$Category->name}}</option>
+                    @endforeach
+                    @endif
                 </select>
+            </div>
+            <!-- Custom Image Upload Button -->
+            <div class="form-group">
+                <label for="subCategoryImage">Sub Category Image:</label>
+                <div class="custom-file-upload">
+
+                    <input type="file" name="image" id="subCategoryImage" class="file-input" accept="image/*" onchange="sbcPreviewImage(event)">
+                    <button type="button" class="btn btn-secondary btn-upload" onclick="document.getElementById('subCategoryImage').click();">
+                        <i class="fa-solid fa-upload"></i> Upload Image
+                    </button>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="image-preview mt-3">
+                    <img id="sbcImagePreview" src="" alt="Image Preview" style="max-width: 150px; max-height: 150px; display: none;">
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Add Subcategory</button>
         </form>
@@ -457,22 +464,79 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
+                    <th>Images</th>
                     <th>Subcategory Name</th>
                     <th>Parent Category</th>
-                    <th>Actions</th>
+                    <th>Update</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
+                @if(isset($SubCategories) && $SubCategories->isNotEmpty())
+                    @foreach($SubCategories as $sbc)
+
                 <tr>
-                    <td>1</td>
-                    <td>Subcategory 1</td>
-                    <td>Category A</td>
+                    <form action="{{route('category-update', $Category->id)}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
                     <td>
-                        <button class="btn btn-warning btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <div class="flex-center">
+                            @if($sbc->image)
+                                <img src="{{ asset('storage/' . $sbc->image) }}" alt="Sub Category Image" id="subCategoryImageSmall" class="img-fluid" onclick="document.getElementById('subCategoryImage-{{ $sbc->id }}').click();">
+                            @else
+                                <span>No Image</span>
+                            @endif
+
+                            <!-- File input, only visible after Edit is clicked -->
+                            <input type="file" name="sub_category_image" id="subCategoryImage-{{ $sbc->id }}" onchange="replaceImage(event)" class="form-control mt-2" style="display: none;" disabled>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-input-container">
+                            <input type="text" class="form-control" name="sub_category_name" id="subCategoryName-{{ $sbc->id }}" value="{{ $sbc->name }}" readonly style="width: 100%;">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-input-container">
+                            <select class="form-control" id="subCategoryName-{{ $sbc->id }}" name="category_id" disabled>
+                                <option value="{{ $sbc->category->id }}"  style="width: 100%;">{{$sbc->category->name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                        <!-- Actions -->
+                        <td>
+                            <div class="flex-center">
+                                <!-- Edit Button -->
+                                <button type="button" class="btn btn-success btn-sm" onclick="enableEdit({{ $sbc->id }})">
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </button>
+
+                                <!-- Update Button -->
+
+
+                                <button type="submit" class="btn btn-warning btn-sm" id="updateBtn-{{ $sbc->id }}" disabled>
+                                    <i class="fa-solid fa-check"></i> Update
+                                </button>
+                            </div>
+                        </td>
+                    </form>
+                    <td>
+                        <div class="flex-center">
+                            <!-- Delete Button -->
+                            <form action="{{ route('sub-category-delete', $sbc->id) }}" method="POST" style="display:inline;">
+                                {{--                                   <form style="display:inline;">--}}
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
+
+                    @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
@@ -753,6 +817,19 @@
             if (reader.readyState === 2) {
                 imagePreview.src = reader.result;
                 // imagePreview.style.display = 'block';
+            }
+        }
+
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    function sbcPreviewImage(event) {
+        const reader = new FileReader();
+        const imagePreview = document.getElementById('sbcImagePreview');
+
+        reader.onload = function() {
+            if (reader.readyState === 2) {
+                imagePreview.src = reader.result;
+                imagePreview.style.display = 'block';
             }
         }
 
