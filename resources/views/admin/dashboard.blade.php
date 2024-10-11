@@ -500,6 +500,11 @@
                         <div class="table-input-container">
                             <select class="form-control" id="subCategoryName-{{ $sbc->id }}" name="category_id" disabled>
                                 <option value="{{ $sbc->category->id }}"  style="width: 100%;">{{$sbc->category->name}}</option>
+                                @foreach($Categories as $Category)
+                                    @if(!($Category->id == $sbc->category->id))
+                                    <option value="{{$Category->id}}"> {{$Category->name}} </option>
+                                    @endif
+                                @endforeach
                             </select>
                         </div>
                     </td>
