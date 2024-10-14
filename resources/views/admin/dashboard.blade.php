@@ -385,7 +385,7 @@
                             <td>
                                 <div class="flex-center">
                                 <!-- Edit Button -->
-                                <button type="button" class="btn btn-success btn-sm" onclick="enableEdit({{ $Category->id }})">
+                                <button type="button" class="btn btn-success btn-sm" onclick="enableEdit({{ $Category->id }},'cEdit')">
                                     <i class="fa-solid fa-pen"></i> Edit
                                 </button>
 
@@ -498,7 +498,7 @@
                     </td>
                     <td>
                         <div class="table-input-container">
-                            <select class="form-control" id="subCategoryName-{{ $sbc->id }}" name="category_id" disabled>
+                            <select class="form-control" id="parentCategoryName-{{ $sbc->id }}" name="category_id" disabled>
                                 <option value="{{ $sbc->category->id }}"  style="width: 100%;">{{$sbc->category->name}}</option>
                                 @foreach($Categories as $Category)
                                     @if(!($Category->id == $sbc->category->id))
@@ -512,14 +512,14 @@
                         <td>
                             <div class="flex-center">
                                 <!-- Edit Button -->
-                                <button type="button" class="btn btn-success btn-sm" onclick="enableEdit({{ $sbc->id }})">
+                                <button type="button" id="sbcEdit" class="btn btn-success btn-sm" onclick="enableEdit({{ $sbc->id }},'sbcEdit')">
                                     <i class="fa-solid fa-pen"></i> Edit
                                 </button>
 
                                 <!-- Update Button -->
 
 
-                                <button type="submit" class="btn btn-warning btn-sm" id="updateBtn-{{ $sbc->id }}" disabled>
+                                <button type="submit" class="btn btn-warning btn-sm" id="sbcUpdateBtn-{{ $sbc->id }}" disabled>
                                     <i class="fa-solid fa-check"></i> Update
                                 </button>
                             </div>
@@ -784,21 +784,34 @@
         document.getElementById(sectionId).style.display = 'block';
     }
 
-    function enableEdit(id) {
+    function enableEdit(id,name) {
         // Enable input field for editing
-        const nameField = document.getElementById(`categoryName-${id}`);
-        const updateBtn = document.getElementById(`updateBtn-${id}`);
-        const imageField = document.getElementById(`categoryImage-${id}`);
-
+        var nameField = '';
+        var updateBtn = '';
+        var imageField = '';
+        var parentCategory = '';
+        if(name === 'cEdit'){
+        nameField = document.getElementById(`categoryName-${id}`);
+        updateBtn = document.getElementById(`updateBtn-${id}`);
+        imageField = document.getElementById(`categoryImage-${id}`);
+        }
+        else {
+            nameField = document.getElementById(`subCategoryName-${id}`);
+            updateBtn = document.getElementById(`sbcUpdateBtn-${id}`);
+            imageField = document.getElementById(`subCategoryImage-${id}`);
+            parentCategory = document.getElementById(`parentCategoryName-${id}`);
+        }
         if (nameField.readOnly) {
             nameField.readOnly = false;
             updateBtn.removeAttribute('disabled');
             imageField.removeAttribute('disabled');
+            parentCategory.removeAttribute('disabled');
             nameField.focus(); // Focus on the input when edit is enabled
         } else {
             nameField.readOnly = true;
             updateBtn.disabled = true;
             imageField.disabled = true;
+            parentCategory.disabled = true;
         }
     }
     function previewImage(event) {
