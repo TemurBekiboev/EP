@@ -215,11 +215,11 @@
             @csrf
             <div class="form-group">
                 <label for="productName">Product Name:</label>
-                <input type="text" class="form-control" name="productName" id="productName" placeholder="Enter product name">
+                <input type="text" class="form-control" name="product_name" id="productName" placeholder="Enter product name">
             </div>
             <div class="form-group">
                 <label for="productCategory">Sub Category:</label>
-                <select class="form-control" id="productCategory" name="productCategory">
+                <select class="form-control" id="productCategory" name="product_sbc">
                     @if(isset($SubCategories) && $SubCategories->isNotEmpty())
                     @foreach($SubCategories as $SubCategory)
 
@@ -234,7 +234,7 @@
             </div>
             <div class="form-group">
                 <label for="productPrice">Price:</label>
-                <input type="number" class="form-control" id="productPrice" placeholder="Enter product price">
+                <input type="number" name="product_price" class="form-control" id="product_price" placeholder="Enter product price">
             </div>
             <div class="form-group">
                 <label for="productDescription">Description:</label>
@@ -242,11 +242,11 @@
             </div>
             <div class="form-group">
                 <label for="productBrand">Brand:</label>
-                <input type="text" class="form-control" id="productBrand" placeholder="Enter product brand name">
+                <input type="text" name="product_brand" class="form-control" id="product_brand" placeholder="Enter product brand name">
             </div>
             <div class="form-group">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <input class="form-check-input" name="product_availability" type="checkbox" value="true" id="defaultCheck1">
                 <label class="form-check-label" for="defaultCheck1">
                     Product Availability
                 </label>
@@ -254,21 +254,27 @@
             </div>
             <div class="form-group">
                 <label for="productPrice">Quantity:</label>
-                <input type="number" class="form-control" id="productQuantity" placeholder="Enter product quantity">
+                <input type="number" name="product_quantity" class="form-control" id="productQuantity" placeholder="Enter product quantity">
             </div>
+            {{--    Image Add  --}}
             <div class="form-group">
+                <label for="productImages">Product Images:</label>
+                <div class="custom-file-upload">
+                    <input type="file" name="images[]" id="productImages" class="file-input" accept="image/*" multiple onchange="productPreviewImages(event)">
+                    <button type="button" class="btn btn-secondary btn-upload" onclick="document.getElementById('productImages').click();">
+                        <i class="fa-solid fa-upload"></i> Upload Images
+                    </button>
+                </div>
 
-                <!-- Custom Upload Button -->
-                <label class="custom-file-upload">
-                    <input id="fileUpload" type="file" accept="image/*"/>
-                    <i class="fa-solid fa-image fa-2x"></i> <!-- Icon size doubled here -->
-                </label>
-                <!-- Label -->
-                <label for="fileUpload" class="form-label">Product image:</label>
+                <!-- Image Previews -->
+                <div id="productPreviewImages" class="image-previews mt-3">
+                    <!-- Preview images will be dynamically added here -->
+                </div>
             </div>
+
             <div class="form-group">
-                <label for="productName">Manufacturer:</label>
-                <input type="text" class="form-control" id="productName" placeholder="Manufacturer name">
+                <label for="productMnf">Manufacturer:</label>
+                <input type="text" name="product_mnf" class="form-control" id="productMnf" placeholder="Manufacturer name">
             </div>
             <button type="submit" class="btn btn-primary">Add Product</button>
         </form>
@@ -853,6 +859,74 @@
 
         reader.readAsDataURL(event.target.files[0]);
     }
+    var selectedImages = []; // Store all selected images globally
+
+    // Store the DataTransfer object to hold files
+    var dt = new DataTransfer();
+
+    function productPreviewImages(event) {
+        var previewsContainer = document.getElementById('productPreviewImages');
+        var files = event.target.files;
+
+        // Loop through the new files and add them to the DataTransfer object
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            dt.items.add(file);  // Add the file to the DataTransfer object
+
+            var reader = new FileReader();
+            reader.onload = (function(file) {
+                return function(e) {
+                    // Create an image element for preview
+                    var imgContainer = document.createElement('div');
+                    imgContainer.style.display = 'inline-block';
+                    imgContainer.style.position = 'relative';
+                    imgContainer.style.marginRight = '10px';
+
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = "150px";
+                    img.style.maxHeight = "150px";
+
+                    // Create a "remove" button for each image
+                    var removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.style.position = 'absolute';
+                    removeBtn.style.top = '0';
+                    removeBtn.style.right = '0';
+                    removeBtn.style.background = 'red';
+                    removeBtn.style.color = 'white';
+                    removeBtn.style.border = 'none';
+                    removeBtn.style.cursor = 'pointer';
+                    removeBtn.onclick = function() {
+                        // Remove the image preview
+                        previewsContainer.removeChild(imgContainer);
+
+                        // Remove the file from DataTransfer object
+                        for (var j = 0; j < dt.items.length; j++) {
+                            if (dt.items[j].getAsFile() === file) {
+                                dt.items.remove(j);
+                                break;
+                            }
+                        }
+
+                        // Update the file input with the new DataTransfer files
+                        document.getElementById('subCategoryImages').files = dt.files;
+                    };
+
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(removeBtn);
+                    previewsContainer.appendChild(imgContainer);
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
+        }
+
+        // Update the file input with the DataTransfer files
+        event.target.files = dt.files;
+    }
+
+
 </script>
 
 </body>
