@@ -49,16 +49,18 @@ class ProductCreateController extends Controller
                 'regex:/^\d+(\.\d{1,2})?$/' // Must be formatted with at most 2 decimal places
             ],
                 'images' => 'required|array|max:5',  // Array of images, max 5
-                'images.*' => 'image|mimes:jpeg,png,jpg,gif,bmp|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/bmp|max:2048', // Validate each file with stricter MIME checking and max 2MB
+//                'images.*' => 'image|mimes:jpeg,png,jpg,gif,bmp|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/bmp|max:2048', // Validate each file with stricter MIME checking and max 2MB
             'product_mnf'=>'nullable|string|max:255',
         ]);
 
         if ($validatedData){
-            foreach ($request->file('images') as $image){
+            $images = array();
+            foreach ($request->file('images') as $key=>$image){
                 $file = $image->getClientOriginalName();
+                $images[$key] = 'images/'.$file;
                 Storage::disk('public')->putFileAs('images/product',$image,$file);
             }
-            $images = json_encode($request->file('images'));
+            $imagesJson = json_encode($images);
             $product = new Product;
                $product->name = $request->product_name;
                $product->subCategory_id = $request->product_sbc;
@@ -67,7 +69,7 @@ class ProductCreateController extends Controller
                 $product->brand = $request->product_brand;
                 $product->availability = $request->product_availability;
                 $product->quantity = $request->product_quantity;
-                $product->images = $images;
+                $product->images = $imagesJson;
                 $product->manufacturer = $request->product_mnf;
                 $product->save();
             return redirect()->back()->with('success','Product created successfully');

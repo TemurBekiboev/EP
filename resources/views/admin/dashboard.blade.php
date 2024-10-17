@@ -246,7 +246,7 @@
             </div>
             <div class="form-group">
             <div class="form-check">
-                <input class="form-check-input" name="product_availability" type="checkbox" value="true" id="defaultCheck1">
+                <input class="form-check-input" name="product_availability" type="checkbox" value="1" id="defaultCheck1">
                 <label class="form-check-label" for="defaultCheck1">
                     Product Availability
                 </label>
@@ -284,9 +284,9 @@
             <table class="table table-bordered">
                 <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
+                    <th>Image</th>
                     <th>Product Name</th>
-                    <th>Category</th>
+                    <th>Sub Category</th>
                     <th>Price</th>
                     <th>Stock</th>
                     <th>Actions</th>
@@ -611,26 +611,41 @@
     <div id="attributeValues" class="section" style="display:none;">
         <h2>Manage Attribute Values</h2>
         <!-- Attribute Value Form -->
-        <form>
+        <form id="attributeForm">
             <div class="form-group">
-                <label for="attributeValueName">Attribute Value:</label>
-                <input type="text" class="form-control" id="attributeValueName" placeholder="Enter attribute value">
-            </div>
-            <div class="form-group">
-                <label for="attributeValueProduct">Product:</label>
-                <select class="form-control" id="attributeValueProduct">
-                    <option>Product 1</option>
-                    <option>Product 2</option>
+                <label for="subCategory">Sub Category:</label>
+                <select class="form-control" id="subCategory" name="subCategory">
+                    <option value="subcategory1">Sub Category 1</option>
+                    <option value="subcategory2">Sub Category 2</option>
+                    <!-- Add more subcategories as needed -->
                 </select>
             </div>
-            <div class="form-group">
-                <label for="attributeValueAttribute">Attribute:</label>
-                <select class="form-control" id="attributeValueAttribute">
-                    <option>Color</option>
-                    <option>Size</option>
-                </select>
+
+            <div id="attributeWrapper">
+                <!-- First Attribute Value Group -->
+                <div class="attributeGroup">
+                    <div class="form-group">
+                        <label for="attributeValueName">Attribute Value:</label>
+                        <input type="text" class="form-control" name="attributeValues[]" placeholder="Enter attribute value">
+                    </div>
+                    <div class="form-group">
+                        <label for="attributeValueAttribute">Attribute:</label>
+                        <select class="form-control" name="attributeNames[]">
+                            <option value="color">Color</option>
+                            <option value="size">Size</option>
+                            <!-- Add more attributes as needed -->
+                        </select>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Add Attribute Value</button>
+
+            <!-- Button to add new attribute fields -->
+            <button type="button" class="btn btn-secondary" id="addAttributeBtn">+ Add Attribute</button>
+
+            <br><br>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary">Submit Attribute Values</button>
         </form>
 
         <!-- Existing Attribute Values Table -->
