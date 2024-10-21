@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attribute_values', function (Blueprint $table) {
-            $table->dropForeign('product_id');
+        Schema::table('attributes', function (Blueprint $table) {
+            $table->dropForeign(['product_id']);
             $table->dropColumn('product_id');
+            $table->dropForeign(['subCategory_id']);
+            $table->dropColumn('subCategory_id');
         });
     }
 
@@ -22,10 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attribute_values', function (Blueprint $table) {
-
-
-
+        Schema::table('attributes', function (Blueprint $table) {
+            //
         });
     }
 };

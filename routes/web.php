@@ -14,6 +14,8 @@ use App\Http\Controllers\CategoryCreateController;
 use App\Http\Controllers\CategoryUpdateController;
 use App\Http\Controllers\SubCategoryCreateController;
 use App\Http\Controllers\SubCategoryUpdateController;
+use App\Http\Controllers\AttributeCreateController;
+use App\Http\Controllers\AttributeUpdateController;
 
 //  Guest Routes
 Route::get('/', function (){
@@ -40,6 +42,10 @@ Route::prefix('admin')->group(function () {
         Route::post('/dashboard/subcategory/create',[SubCategoryCreateController::class,'create'])->name('sub-category-create');
         Route::put('/dashboard/subcategory/{id}/update',[SubCategoryUpdateController::class,'update'])->name('sub-category-update');
         Route::delete('/dashboard/subcategory/{id}/delete',[SubCategoryUpdateController::class,'delete'])->name('sub-category-delete');
+        //attributes
+        Route::post('/dashboard/attribute/create',[AttributeCreateController::class,'create'])->name('attribute-create');
+        Route::put('/dashboard/attribute/{id}/update',[AttributeUpdateController::class,'update'])->name('attribute-update');
+        Route::delete('/dashboard/attribute/{id}/delete',[AttributeUpdateController::class,'delete'])->name('attribute-delete');
     });
 });
 

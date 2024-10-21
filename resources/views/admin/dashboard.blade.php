@@ -557,26 +557,21 @@
     <div id="attributes" class="section" style="display:none;">
         <h2>Manage Attributes</h2>
         <!-- Attribute Form -->
-        <form>
-            <div class="form-group">
-                <label for="attributeName">Attribute Name:</label>
-                <input type="text" class="form-control" id="attributeName" placeholder="Enter attribute name">
+        <form id="dynamicInputForm" action="{{route('attribute-create')}}" method="post">
+            @csrf
+            <div id="inputWrapper">
+                <!-- First input field -->
+                <div class="form-group">
+                    <label for="attributeName1">Attribute Name:</label>
+                    <input type="text" class="form-control" name="attributeNames[]" id="attributeName1" placeholder="Enter attribute name">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="attributeProduct">Product:</label>
-                <select class="form-control" id="attributeProduct">
-                    <option>Product 1</option>
-                    <option>Product 2</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="attributeSubCategory">Subcategory:</label>
-                <select class="form-control" id="attributeSubCategory">
-                    <option>Subcategory A</option>
-                    <option>Subcategory B</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Attribute</button>
+
+            <!-- Button to add more input fields -->
+            <button type="button" id="addInputBtn" class="btn btn-secondary">+ Add Attribute</button>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
         <!-- Existing Attributes Table -->
@@ -940,6 +935,28 @@
         // Update the file input with the DataTransfer files
         event.target.files = dt.files;
     }
+    document.addEventListener('DOMContentLoaded', function () {
+        let attributeIndex = 1; // Keep track of the number of input fields
+
+        // Event listener for the "Add Attribute" button
+        document.getElementById('addInputBtn').addEventListener('click', function () {
+            attributeIndex++; // Increment the attribute index
+
+            // Create a new div for the new input field
+            let newInputGroup = document.createElement('div');
+            newInputGroup.classList.add('form-group');
+
+            // Add the new input field's HTML
+            newInputGroup.innerHTML = `
+            <label for="attributeName${attributeIndex}">Attribute Name:</label>
+            <input type="text" class="form-control" name="attributeNames[]" id="attributeName${attributeIndex}" placeholder="Enter attribute name">
+        `;
+
+            // Append the new input field to the wrapper
+            document.getElementById('inputWrapper').appendChild(newInputGroup);
+        });
+    });
+
 
 
 </script>
