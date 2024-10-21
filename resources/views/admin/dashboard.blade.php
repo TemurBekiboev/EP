@@ -608,11 +608,13 @@
         <!-- Attribute Value Form -->
         <form id="attributeForm">
             <div class="form-group">
-                <label for="subCategory">Sub Category:</label>
-                <select class="form-control" id="subCategory" name="subCategory">
-                    <option value="subcategory1">Sub Category 1</option>
-                    <option value="subcategory2">Sub Category 2</option>
-                    <!-- Add more subcategories as needed -->
+                <label for="attrValProduct">Product:</label>
+                <select class="form-control" id="attrValProduct" name="attrValProduct">
+                    @if(isset($Products) && $Products->isNotEmpty())
+                        @foreach($Products as $Product)
+                    <option value="{{$Product->id}}">{{$Product->name}}</option>
+                        @endforeach
+                    @endif
                 </select>
             </div>
 
@@ -626,9 +628,12 @@
                     <div class="form-group">
                         <label for="attributeValueAttribute">Attribute:</label>
                         <select class="form-control" name="attributeNames[]">
-                            <option value="color">Color</option>
-                            <option value="size">Size</option>
-                            <!-- Add more attributes as needed -->
+                            @if(isset($Attributes) && $Attributes->isNotEmpty())
+                            @foreach($Attributes as $Attribute)
+                            <option value="{{$Attribute->id}}">{{$Attribute->name}}</option>
+                                @endforeach
+                            @endif
+
                         </select>
                     </div>
                 </div>
