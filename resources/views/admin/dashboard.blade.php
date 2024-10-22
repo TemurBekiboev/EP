@@ -620,6 +620,7 @@
 
             <div id="attributeWrapper">
                 <!-- First Attribute Value Group -->
+                <br>
                 <div class="attributeGroup">
                     <div class="form-group">
                         <label for="attributeValueName">Attribute Value:</label>
@@ -959,6 +960,36 @@
 
             // Append the new input field to the wrapper
             document.getElementById('inputWrapper').appendChild(newInputGroup);
+        });
+
+        document.getElementById('addAttributeBtn').addEventListener('click', function () {
+            attributeIndex++; // Increment the attribute index
+
+            // Create a new div for the new input field
+            let InputGroup = document.createElement('div');
+            InputGroup.classList.add('form-group');
+            let newInputGroup = document.createElement('div');
+            newInputGroup.classList.add('form-group');
+
+            var Attributes = @json($Attributes);
+
+            // Add the new input field's HTML
+            InputGroup.innerHTML = "<br><label for='attributeValueName" + attributeIndex + "'>Attribute Value:</label> <input type='text' class='form-control' id='attributeValueName" + attributeIndex + "' name='attributeValues[]' placeholder='Enter attribute value'>";
+            let selectHTML = '<label for="attributeValueAttribute' + attributeIndex + '">Attribute:</label> <select class="form-control" id="attributeValueAttribute' + attributeIndex + '" name="attributeNames[]">';
+
+            if (typeof Attributes !== 'undefined' && Attributes.length > 0) {
+                Attributes.forEach(function (attribute) {
+                    selectHTML += `<option value="${attribute.id}">${attribute.name}</option>`;
+                });
+            }
+            selectHTML += '</select>';
+
+            // Assign the built select HTML to newInputGroup
+            newInputGroup.innerHTML = selectHTML;
+
+            // Append the new input field to the wrapper
+            document.getElementById('attributeWrapper').appendChild(InputGroup);
+            document.getElementById('attributeWrapper').appendChild(newInputGroup);
         });
     });
 
