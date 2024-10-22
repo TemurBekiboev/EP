@@ -606,7 +606,8 @@
     <div id="attributeValues" class="section" style="display:none;">
         <h2>Manage Attribute Values</h2>
         <!-- Attribute Value Form -->
-        <form id="attributeForm">
+        <form id="attributeForm" method="post" action="{{route('attribute-value-create')}}">
+            @csrf
             <div class="form-group">
                 <label for="attrValProduct">Product:</label>
                 <select class="form-control" id="attrValProduct" name="attrValProduct">
