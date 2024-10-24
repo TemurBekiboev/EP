@@ -22,10 +22,10 @@ class CategoryCreateController extends Controller
             if ($validatedData){
 
                $file = $request->file('image')->getClientOriginalName();
-                Storage::disk('public')->putFileAs('images',$request->file('image'),$file);
+                Storage::disk('public')->putFileAs('images/category',$request->file('image'),$file);
                 Category::create([
                     'name'=>$request->name,
-                    'image'=>'images/'.$file,
+                    'image'=>'images/category/'.$file,
                 ]);
 
                 return redirect()->back()->with('success','Category created successfully');

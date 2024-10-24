@@ -35,7 +35,8 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
         .category-img {
-            height: 150px; /* Adjust the height of the images */
+            width: 100%;
+            height: 250px; /* Adjust the height of the images */
             object-fit: cover; /* Ensure the image fits well */
         }
         .category-title {
@@ -68,6 +69,11 @@
             text-decoration: none; /* Remove underline from links */
             color: inherit; /* Inherit color from parent */
         }
+        /*.category-img {*/
+        /*    object-fit: cover;*/
+        /*    width: 100%;*/
+        /*    height: 200px; !* Adjust based on how tall you want the image *!*/
+        /*}*/
     </style>
 </head>
 <body>
@@ -129,155 +135,50 @@
 <!-- Categories Section -->
 <div class="container my-5">
     <h2 class="text-center mb-4">Shop by Categories</h2>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card mb-4 category-card">
-                <img src="https://via.placeholder.com/300" class="card-img-top category-img" alt="Category 1">
-                <div class="category-title">Category 1</div>
+    @if(isset($categories) && $categories->isNotEmpty())
+        @foreach($categories as $key=>$category)
+            @if($key % 4 == 0)
+                <div class="row">
+        @endif
+
+                <div class="col-md-3">
+                    <div class="card mb-4 category-card p-2">
+                        <img src="storage/{{$category->image}}" class="card-img-top category-img" alt="Category 1">
+                        <div class="category-title">{{$category->name}}</div>
+                    </div>
+                </div>
+
+        @if($key % 4 == 3)
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card mb-4 category-card">
-                <img src="https://via.placeholder.com/300" class="card-img-top category-img" alt="Category 2">
-                <div class="category-title">Category 2</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card mb-4 category-card">
-                <img src="https://via.placeholder.com/300" class="card-img-top category-img" alt="Category 3">
-                <div class="category-title">Category 3</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card mb-4 category-card">
-                <img src="https://via.placeholder.com/300" class="card-img-top category-img" alt="Category 4">
-                <div class="category-title">Category 4</div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card mb-4 category-card">
-                <img src="https://via.placeholder.com/300" class="card-img-top category-img" alt="Category 5">
-                <div class="category-title">Category 5</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card mb-4 category-card">
-                <img src="https://via.placeholder.com/300" class="card-img-top category-img" alt="Category 6">
-                <div class="category-title">Category 6</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card mb-4 category-card">
-                <img src="https://via.placeholder.com/300" class="card-img-top category-img" alt="Category 7">
-                <div class="category-title">Category 7</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card mb-4 category-card">
-                <img src="https://via.placeholder.com/300" class="card-img-top category-img" alt="Category 8">
-                <div class="category-title">Category 8</div>
-            </div>
-        </div>
-    </div>
+                @endif
+        @endforeach
+    @endif
 </div>
 
 <!-- Products Section -->
 <div class="container my-5">
     <h2 class="text-center mb-4">Featured Products</h2>
+    @if(isset($products) && $products->isNotEmpty())
+        @foreach($products as $key=>$product)
+            @if($key % 4 == 0)
     <div class="row">
+        @endif
         <div class="col-md-3 mb-4">
             <a href="product1.html" class="product-link">
                 <div class="card product-card">
                     <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="Product 1">
                     <div class="card-body">
-                        <h5 class="card-title">Product 1</h5>
-                        <p class="card-text">$19.99</p>
+                        <h5 class="card-title">{{$product->name}}</h5>
+                        <p class="card-text">{{$product->price}} sum</p>
                     </div>
                 </div>
             </a>
         </div>
-        <div class="col-md-3 mb-4">
-            <a href="product2.html" class="product-link">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="Product 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 2</h5>
-                        <p class="card-text">$29.99</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3 mb-4">
-            <a href="product3.html" class="product-link">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="Product 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 3</h5>
-                        <p class="card-text">$39.99</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3 mb-4">
-            <a href="product4.html" class="product-link">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="Product 4">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 4</h5>
-                        <p class="card-text">$49.99</p>
-                    </div>
-                </div>
-            </a>
-        </div>
+        @if($key % 4 == 3)
     </div>
-    <div class="row">
-        <div class="col-md-3 mb-4">
-            <a href="product5.html" class="product-link">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="Product 5">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 5</h5>
-                        <p class="card-text">$59.99</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3 mb-4">
-            <a href="product6.html" class="product-link">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="Product 6">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 6</h5>
-                        <p class="card-text">$69.99</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3 mb-4">
-            <a href="product7.html" class="product-link">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="Product 7">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 7</h5>
-                        <p class="card-text">$79.99</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-3 mb-4">
-            <a href="product8.html" class="product-link">
-                <div class="card product-card">
-                    <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="Product 8">
-                    <div class="card-body">
-                        <h5 class="card-title">Product 8</h5>
-                        <p class="card-text">$89.99</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
+            @endif
+        @endforeach
+    @endif
 </div>
 
 <!-- Footer -->

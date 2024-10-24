@@ -18,11 +18,10 @@ use App\Http\Controllers\AttributeCreateController;
 use App\Http\Controllers\AttributeUpdateController;
 use App\Http\Controllers\AttributeValCreateController;
 use App\Http\Controllers\AttributeValUpdateController;
+use App\Http\Controllers\HomeController;
 
 //  Guest Routes
-Route::get('/', function (){
-   return view('index');
-});
+Route::get('/', [HomeController::class, 'index']);
 
 // Admin routes
 Route::prefix('admin')->group(function () {
