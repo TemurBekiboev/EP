@@ -12,6 +12,12 @@ class Product extends Model
     public function subCategory(){
         return $this->belongsTo(SubCategory::class);
     }
+    public function attributeVal(){
+        return $this->hasMany(AttributeValue::class);
+    }
+    public function attributes(){
+        return $this->belongsToMany(Attribute::class,'attribute_values','product_id','attribute_id')->withPivot('value');
+    }
 
     protected $fillable = [
         'name',

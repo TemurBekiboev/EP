@@ -16,7 +16,7 @@ class ProductCreateController extends Controller
                 'required',
                 'min:3',
                 'max:255',
-                'regex:/^[a-zA-Z0-9\s\-]+$/',
+//                'regex:/^[a-zA-Zа-яА-ЯёЁ0-9\s\-]+$/u',
                 'unique:products,name',
                 Rule::notIn(['undefined', 'null', 'admin']),
             ],
@@ -32,7 +32,7 @@ class ProductCreateController extends Controller
                 'nullable',               // Optional description
                 'min:10',                 // Minimum length of 10 characters
                 'max:1000',               // Maximum length of 1000 characters
-                'regex:/^[a-zA-Z0-9\s\.\,\!\?\-]+$/', // Allow only alphanumeric and punctuation
+//                'regex:/^[a-zA-Zа-яА-ЯёЁ0-9\s\-]+$/u', // Allow only alphanumeric and punctuation
                 function ($attribute, $value, $fail) { // Custom rule to block HTML tags
                     if ($value !== strip_tags($value)) {
                         $fail($attribute.' must not contain HTML tags.');
@@ -57,7 +57,7 @@ class ProductCreateController extends Controller
             $images = array();
             foreach ($request->file('images') as $key=>$image){
                 $file = $image->getClientOriginalName();
-                $images[$key] = 'images/'.$file;
+                $images[$key] = 'images/product'.$file;
                 Storage::disk('public')->putFileAs('images/product',$image,$file);
             }
             $imagesJson = json_encode($images);

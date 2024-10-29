@@ -72,57 +72,44 @@
 <div class="container my-5">
     <div class="row">
         <div class="col-md-6">
-            <img id="mainImage" src="https://via.placeholder.com/400" class="product-img" alt="Product Image">
+            <img id="mainImage" src="../storage/{{json_decode($product->images)[0]}}" class="product-img" alt="Product Image">
             <div class="mt-3">
-                <img src="https://via.placeholder.com/100" class="thumbnail-img" alt="Thumbnail 1" onclick="changeImage('https://via.placeholder.com/400')">
-                <img src="https://via.placeholder.com/100/555555/ffffff?text=2" class="thumbnail-img" alt="Thumbnail 2" onclick="changeImage('https://via.placeholder.com/400/555555/ffffff?text=2')">
-                <img src="https://via.placeholder.com/100/777777/ffffff?text=3" class="thumbnail-img" alt="Thumbnail 3" onclick="changeImage('https://via.placeholder.com/400/777777/ffffff?text=3')">
+                @foreach(json_decode($product->images) as $image)
+                <img src="../storage/{{$image}}" class="thumbnail-img" alt="Thumbnail 1" onclick="changeImage('../storage/{{$image}}')">
+                @endforeach
             </div>
         </div>
         <div class="col-md-6">
-            <h2 class="product-title">Product Title</h2>
+            <h2 class="product-title">{{$product->name}}</h2>
             <div class="rating mb-2">
                 ★★★★☆ 4.5 (120 reviews)
             </div>
-            <h4 class="text-success">$49.99</h4>
+            <h4 class="text-success">{{$product->price}} sum</h4>
             <button class="btn btn-primary btn-lg mb-3">Add to Cart</button>
-            <h5>Description:</h5>
-            <p>This is a detailed description of the product. It includes information about the features, specifications, and any other relevant details that a customer might find helpful.</p>
+            <h5>Описание товара:</h5>
+            <p>{{$product->description}}</p>
         </div>
     </div>
 
     <!-- Additional Information Section -->
     <div class="row my-5">
         <div class="col-md-12">
-            <h5>Additional Information:</h5>
+            <h5>Характеристики:</h5>
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Attribute</th>
-                        <th>Details</th>
+                        <th>Атрибут</th>
+                        <th>Детали</th>
                     </tr>
                 </thead>
                 <tbody>
+                @foreach($product->attributes as $attribute)
+
                     <tr>
-                        <td>Brand</td>
-                        <td>Example Brand</td>
+                        <td>{{$attribute->name}}</td>
+                        <td>{{$attribute->pivot->value}}</td>
                     </tr>
-                    <tr>
-                        <td>Model</td>
-                        <td>Example Model</td>
-                    </tr>
-                    <tr>
-                        <td>Color</td>
-                        <td>Black</td>
-                    </tr>
-                    <tr>
-                        <td>Material</td>
-                        <td>Plastic</td>
-                    </tr>
-                    <tr>
-                        <td>Dimensions</td>
-                        <td>10 x 5 x 3 inches</td>
-                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>

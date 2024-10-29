@@ -143,8 +143,10 @@
 
                 <div class="col-md-3">
                     <div class="card mb-4 category-card p-2">
+                        <a href="{{route('products-page',['id'=>$category->id])}}" style="text-decoration: none">
                         <img src="storage/{{$category->image}}" class="card-img-top category-img" alt="Category 1">
                         <div class="category-title">{{$category->name}}</div>
+                        </a>
                     </div>
                 </div>
 
@@ -164,9 +166,9 @@
     <div class="row">
         @endif
         <div class="col-md-3 mb-4">
-            <a href="product1.html" class="product-link">
+            <a href="{{route('product-view',['id'=>$product->id])}}" class="product-link">
                 <div class="card product-card">
-                    <img src="https://via.placeholder.com/200" class="card-img-top product-img" alt="Product 1">
+                    <img src="storage/{{json_decode($product->images)[0]}}" class="card-img-top product-img" alt="Product 1">
                     <div class="card-body">
                         <h5 class="card-title">{{$product->name}}</h5>
                         <p class="card-text">{{$product->price}} sum</p>

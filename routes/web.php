@@ -19,9 +19,12 @@ use App\Http\Controllers\AttributeUpdateController;
 use App\Http\Controllers\AttributeValCreateController;
 use App\Http\Controllers\AttributeValUpdateController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 
 //  Guest Routes
 Route::get('/', [HomeController::class, 'index']);
+Route::get('/product/{id}',[ProductController::class,'index'])->name('product-view');
+Route::get('/category/product/{id}',[]);
 
 // Admin routes
 Route::prefix('admin')->group(function () {
