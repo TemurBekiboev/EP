@@ -165,7 +165,7 @@
                         <p class="product-description">{{$product->description}}</p>
                         <p class="product-price">{{$product->price}} sum</p>
                     </div>
-                    <a href="#" class="btn btn-success view-product-btn">View Product</a>
+                    <a href="{{route('product-view',['id' => $product->id])}}" class="btn btn-success view-product-btn">View Product</a>
                 </div>
                     @endforeach
                 @endif
