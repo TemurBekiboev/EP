@@ -155,39 +155,21 @@
         <!-- Products Section -->
         <div class="col-md-9">
             <div class="product-list">
+                @if(isset($category))
+                    @foreach($category->products as $product)
                 <!-- Product Row 1 -->
                 <div class="product-row">
-                    <img src="https://via.placeholder.com/150" alt="Product Image">
+                    <img src="{{asset('storage/'.json_decode($product->images)[0])}}" alt="Product Image">
                     <div class="product-info">
-                        <h5>Product 1</h5>
-                        <p class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
-                        <p class="product-price">$49.99</p>
+                        <h5>{{$product->name}}</h5>
+                        <p class="product-description">{{$product->description}}</p>
+                        <p class="product-price">{{$product->price}} sum</p>
                     </div>
                     <a href="#" class="btn btn-success view-product-btn">View Product</a>
                 </div>
-                
-                <!-- Product Row 2 -->
-                <div class="product-row">
-                    <img src="https://via.placeholder.com/150" alt="Product Image">
-                    <div class="product-info">
-                        <h5>Product 2</h5>
-                        <p class="product-description">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                        <p class="product-price">$39.99</p>
-                    </div>
-                    <a href="#" class="btn btn-success view-product-btn">View Product</a>
-                </div>
-                
-                <!-- Product Row 3 -->
-                <div class="product-row">
-                    <img src="https://via.placeholder.com/150" alt="Product Image">
-                    <div class="product-info">
-                        <h5>Product 3</h5>
-                        <p class="product-description">Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        <p class="product-price">$29.99</p>
-                    </div>
-                    <a href="#" class="btn btn-success view-product-btn">View Product</a>
-                </div>
-                
+                    @endforeach
+                @endif
+
                 <!-- Pagination -->
                 <nav aria-label="Page navigation">
                     <ul class="pagination">

@@ -143,7 +143,7 @@
 
                 <div class="col-md-3">
                     <div class="card mb-4 category-card p-2">
-                        <a href="{{route('products-page',['id'=>$category->id])}}" style="text-decoration: none">
+                        <a href="{{route('categorized-products',['id'=>$category->id])}}" style="text-decoration: none">
                         <img src="storage/{{$category->image}}" class="card-img-top category-img" alt="Category 1">
                         <div class="category-title">{{$category->name}}</div>
                         </a>

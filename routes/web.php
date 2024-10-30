@@ -24,7 +24,7 @@ use App\Http\Controllers\ProductController;
 //  Guest Routes
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/product/{id}',[ProductController::class,'index'])->name('product-view');
-Route::get('/category/product/{id}',[]);
+Route::get('/category/product/{id}',[ProductController::class,'show'])->name('categorized-products');
 
 // Admin routes
 Route::prefix('admin')->group(function () {

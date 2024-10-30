@@ -12,6 +12,9 @@ class Product extends Model
     public function subCategory(){
         return $this->belongsTo(SubCategory::class);
     }
+    public function category(){
+
+    }
     public function attributeVal(){
         return $this->hasMany(AttributeValue::class);
     }

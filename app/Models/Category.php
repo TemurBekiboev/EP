@@ -12,6 +12,11 @@ class Category extends Model
     public function subCategory(){
         return $this->hasMany(Product::class);
     }
+
+    public function products(){
+        return $this->hasManyThrough(Product::class,SubCategory::class,'category_id','subCategory_id','id','id');
+    }
+
     public $timestamps = false;
 
     protected $fillable =[
