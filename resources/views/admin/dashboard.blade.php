@@ -156,7 +156,7 @@
 <!-- Sidebar -->
 <div class="sidebar">
     <div class="admin-info">
-        <img src="https://via.placeholder.com/100" alt="Admin Photo">
+        <img src="https://placeholder.pics/svg/150x150" alt="Admin Photo">
         <h5>Admin Name</h5>
     </div>
     <a href="#" onclick="showSection('dashboard')">Dashboard</a>
